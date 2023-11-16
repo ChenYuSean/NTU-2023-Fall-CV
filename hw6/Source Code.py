@@ -9,8 +9,8 @@ raw_img = cv2.imread('lena.bmp', cv2.IMREAD_GRAYSCALE)
 # %%
 def Binarize(img):
     ret = np.zeros_like(img)
-    for i in range(img.shape[1]):
-        for j in range(img.shape[0]):
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
             ret[i,j] =  0 if img[i,j] < 128 else 255
     return ret
         

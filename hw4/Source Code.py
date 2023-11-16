@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 # %%
 img = cv2.imread('lena.bmp', cv2.IMREAD_GRAYSCALE)
-for i in range(img.shape[1]):
-    for j in range(img.shape[0]):
+for i in range(img.shape[0]):
+    for j in range(img.shape[1]):
         img[i,j] =  0 if img[i,j] < 128 else 255
 kernel = [[0, 1, 1, 1, 0],
           [1, 1, 1, 1, 1],

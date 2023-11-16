@@ -17,8 +17,8 @@ os.makedirs('e', exist_ok=True)
 def GaussNoise(img, mean, sigma, amp):
     ret = np.zeros_like(img)
     noise = np.random.normal(mean, sigma, img.shape)
-    for r in range(ret.shape[1]):
-        for c in range(ret.shape[0]):
+    for r in range(ret.shape[0]):
+        for c in range(ret.shape[1]):
             ret[r,c] = img[r,c] + amp * noise[r,c]
             ret[r,c] = np.clip(ret[r,c], 0, 255)
             
@@ -27,8 +27,8 @@ def GaussNoise(img, mean, sigma, amp):
 def SaltAndPepperNoise(img, prob):
     ret = np.zeros_like(img)
     noise = np.random.random(img.shape)
-    for r in range(ret.shape[1]):
-        for c in range(ret.shape[0]):
+    for r in range(ret.shape[0]):
+        for c in range(ret.shape[1]):
             ret[r,c] = 0 if noise[r,c] < prob else 255 if noise[r,c] > 1-prob else img[r,c]
     return ret.astype(np.uint8)
 
@@ -36,27 +36,27 @@ def SaltAndPepperNoise(img, prob):
 def box_filter(img, size):
     ret = np.zeros_like(img)
     kernel = []
-    for i in range(-(size[1]//2),(size[1]//2)+1):
-        for j in range(-(size[0]//2),(size[0]//2)+1):
+    for i in range(-(size[0]//2),(size[0]//2)+1):
+        for j in range(-(size[1]//2),(size[1]//2)+1):
             kernel.append([i,j])
     weight = 1/(size[0]*size[1]) 
 
-    for r in range(img.shape[1]):
-        for c in range(img.shape[0]):
+    for r in range(img.shape[0]):
+        for c in range(img.shape[1]):
             sum = 0
             for k in kernel:
-                if r+k[1] < 0 or r+k[1] >= img.shape[1] or c+k[0] < 0 or c+k[0] >= img.shape[0]:
+                if r+k[0] < 0 or r+k[0] >= img.shape[0] or c+k[1] < 0 or c+k[1] >= img.shape[1]:
                     break
                 else:
-                    sum = sum + img[r+k[1],c+k[0]]
+                    sum = sum + img[r+k[0],c+k[1]]
             ret[r,c] = sum * weight
     return ret.astype(np.uint8)
 
 def median_filter(img, size):
     ret = np.zeros_like(img)
     kernel = []
-    for i in range(-(size[1]//2),(size[1]//2)+1):
-        for j in range(-(size[0]//2),(size[0]//2)+1):
+    for i in range(-(size[0]//2),(size[0]//2)+1):
+        for j in range(-(size[1]//2),(size[1]//2)+1):
             kernel.append([i,j])
     weight = 1/(size[0]*size[1]) 
 
@@ -64,10 +64,10 @@ def median_filter(img, size):
         for c in range(img.shape[0]):
             val = []
             for k in kernel:
-                if r+k[1] < 0 or r+k[1] >= img.shape[1] or c+k[0] < 0 or c+k[0] >= img.shape[0]:
+                if r+k[0] < 0 or r+k[0] >= img.shape[0] or c+k[1] < 0 or c+k[1] >= img.shape[1]:
                     break
                 else:
-                    val.append(img[r+k[1],c+k[0]])
+                    val.append(img[r+k[0],c+k[1]])
             ret[r,c] = np.median(val)
     return ret.astype(np.uint8)
 

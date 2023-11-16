@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 # %%
 img = cv2.imread('lena.bmp', cv2.IMREAD_GRAYSCALE)
-for i in range(img.shape[1]):
-    for j in range(img.shape[0]):
+for i in range(img.shape[0]):
+    for j in range(img.shape[1]):
         img[i,j] =  0 if img[i,j] < 128 else 255
 cv2.imshow('binary',img)
 cv2.waitKey(0)
@@ -16,8 +16,8 @@ cv2.imwrite('Binarize.png',img)
 # %%
 bin = cv2.imread('lena.bmp', cv2.IMREAD_GRAYSCALE)
 count = [0] * 256
-for i in range(img.shape[1]):
-    for j in range(img.shape[0]):
+for i in range(img.shape[0]):
+    for j in range(img.shape[1]):
         count[bin[i,j]] = count[bin[i,j]] + 1
 
 plt.hist([i for i in range(0,256)],weights=count,bins=256)
@@ -33,8 +33,8 @@ region_pixel_count = {}
 region_sets = {}
 img = img.astype('int64')
 # first pass
-for row in range(img.shape[1]):
-    for col in range(img.shape[0]):
+for row in range(img.shape[0]):
+    for col in range(img.shape[1]):
         # print(row,col)
         if img[row,col] == 0:
             continue
@@ -59,8 +59,8 @@ for row in range(img.shape[1]):
 
 # %%
 # second pass
-for row in range(img.shape[1]):
-    for col in range(img.shape[0]):
+for row in range(img.shape[0]):
+    for col in range(img.shape[1]):
         if img[row,col] == 0:
             continue
         reg = img[row,col]
@@ -89,8 +89,8 @@ b_top = {}
 b_bottom = {}
 b_left = {}
 b_right = {}
-for row in range(img.shape[1]):
-    for col in range(img.shape[0]):
+for row in range(img.shape[0]):
+    for col in range(img.shape[1]):
         reg = img[row,col]
         if reg == 0 or reg not in region_sets.keys():
             continue        
@@ -101,7 +101,7 @@ for row in range(img.shape[1]):
             b_top[reg] = min(b_top[reg],row)
             b_bottom[reg] = max(b_bottom[reg],row)
             b_left[reg] = min(b_left[reg],col)
-            b_right[reg] = max(b_right[reg],col)
+            b_right[reg] = max(b_right[reg],col)\
 
             
 
@@ -111,10 +111,10 @@ row_pixel_count = {}
 c_row = {}
 for reg in region_sets.keys():
     c_row[reg] = 0
-for row in range(img.shape[1]):
+for row in range(img.shape[0]):
     for reg in region_sets.keys():
         row_pixel_count[reg] = 0
-    for col in range(img.shape[0]): 
+    for col in range(img.shape[1]): 
         reg = img[row,col]
         if reg == 0 or reg not in region_sets.keys():
             continue
@@ -127,10 +127,10 @@ col_pixel_count = {}
 c_col = {}
 for reg in region_sets.keys():
     c_col[reg] = 0
-for col in range(img.shape[0]):
+for col in range(img.shape[1]):
     for reg in region_sets.keys():
         col_pixel_count[reg] = 0
-    for row in range(img.shape[1]): 
+    for row in range(img.shape[0]): 
         reg = img[row,col]
         if reg == 0 or reg not in region_sets.keys():
             continue
@@ -147,8 +147,5 @@ cv2.imshow('result',result)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 cv2.imwrite('result.png',result)
-
-# %%
-
 
 
