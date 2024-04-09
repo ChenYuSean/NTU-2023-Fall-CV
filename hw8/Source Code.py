@@ -60,8 +60,8 @@ def median_filter(img, size):
             kernel.append([i,j])
     weight = 1/(size[0]*size[1]) 
 
-    for r in range(img.shape[1]):
-        for c in range(img.shape[0]):
+    for r in range(img.shape[0]):
+        for c in range(img.shape[1]):
             val = []
             for k in kernel:
                 if r+k[0] < 0 or r+k[0] >= img.shape[0] or c+k[1] < 0 or c+k[1] >= img.shape[1]:
@@ -135,8 +135,8 @@ def SNR(signal, processed):
     # Noramlize
     signal = signal.astype(np.float64)
     processed = processed.astype(np.float64)
-    for i in range(signal.shape[1]):
-        for j in range(signal.shape[0]):
+    for i in range(signal.shape[0]):
+        for j in range(signal.shape[1]):
             signal[i,j] = signal[i,j] / 255
             processed[i,j] = processed[i,j] / 255
             
@@ -146,16 +146,16 @@ def SNR(signal, processed):
     noise_var = 0.0
 
     # Mean
-    for i in range(signal.shape[1]):
-        for j in range(signal.shape[0]):
+    for i in range(signal.shape[0]):
+        for j in range(signal.shape[1]):
             signal_mean += signal[i,j]
             noise_mean += processed[i,j] - signal[i,j]
     signal_mean /= signal.shape[0]*signal.shape[1]
     noise_mean /= signal.shape[0]*signal.shape[1]
     
     # Variance
-    for i in range(signal.shape[1]):
-        for j in range(signal.shape[0]):
+    for i in range(signal.shape[0]):
+        for j in range(signal.shape[1]):
             signal_var += (signal[i,j] - signal_mean)**2
             noise_var += (processed[i,j] - signal[i,j] - noise_mean)**2
     signal_var /= signal.shape[0]*signal.shape[1]
