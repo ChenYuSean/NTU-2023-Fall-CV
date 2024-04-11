@@ -79,7 +79,7 @@ class Topology:
             [1, 1, 1, 1, 1],
             [0, 1, 1, 1, 0]]
     kernel = np.asarray(kernel,dtype=np.int32)
-
+    @staticmethod
     def dilation(img, kernel):
         res_img = np.zeros(shape=img.shape,dtype=np.uint8)
         width = kernel.shape[0]
@@ -101,7 +101,7 @@ class Topology:
                         max_val = img[x,y] if img[x,y] > max_val else max_val
                 res_img[row,col] = max_val
         return res_img
-
+    @staticmethod
     def erosion(img, kernel):
         res_img = np.ones(shape=img.shape,dtype=np.uint8)
         width = kernel.shape[0]
@@ -125,8 +125,10 @@ class Topology:
                 res_img[row,col] = min_val
                         
         return res_img
+    @staticmethod
     def opening(img, kernel):
         return Topology.dilation(Topology.erosion(img,kernel),kernel)
+    @staticmethod
     def closing(img, kernel):
         return Topology.erosion(Topology.dilation(img,kernel),kernel)
 
